@@ -1,7 +1,4 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/python,terraform,packer
-# Edit at https://www.toptal.com/developers/gitignore?templates=python,terraform,packer
-
 ### Packer ###
 # Cache objects
 packer_cache/
@@ -212,5 +209,3 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
-
-# End of https://www.toptal.com/developers/gitignore/api/python,terraform,packer
