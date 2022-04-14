@@ -12,14 +12,14 @@ resource "azurerm_storage_account" "data_lake" {
   identity {
     type = "SystemAssigned"
   }
-  
+
   tags = {
-      Environment = var.environment_name
-      Department  = var.department_name
-      CostCentre  = var.cost_centre
-      Project     = var.project_name
-      Description = "Multipurpose storage account"
-      Owner       = var.owner
+    Environment = var.environment_name
+    Department  = var.department_name
+    CostCentre  = var.cost_centre
+    Project     = var.project_name
+    Description = "Multipurpose storage account"
+    Owner       = var.owner
   }
 }
 
@@ -45,10 +45,10 @@ resource "azurerm_private_endpoint" "data_lake" {
   subnet_id           = azurerm_subnet.subnet.id
 
   private_service_connection {
-    name                 = "psc-${var.project_name}-data-lake-${var.environment_tag}"
-    is_manual_connection = false
+    name                           = "psc-${var.project_name}-data-lake-${var.environment_tag}"
+    is_manual_connection           = false
     private_connection_resource_id = azurerm_storage_account.data_lake.id
-    subresource_names    = ["Blob"]
+    subresource_names              = ["Blob"]
   }
 
   private_dns_zone_group {
