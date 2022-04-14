@@ -35,6 +35,7 @@ locals {
   environment_tag   = "dev"
   environment_name  = "development"
   resource_location = "australiaeast"
+  domain_name       = "walys"
 
   # tags
   base_tags = {
@@ -80,12 +81,13 @@ locals {
     }
   }
 
-  key_vault_name                       = "kv-${local.project_name}-${local.environment_tag}"
-  key_vault_soft_delete_retention_days = 30
-  key_vault_purge_protection_enabled   = false
-  key_vault_sku_name                   = "standard"
+  key_vault_name = "kv-${local.domain_name}-${local.project_name}-${local.environment_tag}"
 
-
+  key_vault_settings = {
+    soft_delete_retention_days = 30
+    purge_protection_enabled   = false
+    sku_name                   = "standard"
+  }
 }
 
 module "resource_group" {
@@ -118,15 +120,13 @@ module "key_vault" {
   # path
   source = "../../modules/key_vault"
 
-  project_name                         = local.project_name
-  resource_location                    = local.resource_location
-  resource_group_name                  = local.resource_group_name
-  key_vault_name                       = local.key_vault_name
-  tenant_id                            = data.azurerm_client_config.current.tenant_id
-  key_vault_soft_delete_retention_days = local.key_vault_soft_delete_retention_days
-  key_vault_purge_protection_enabled   = local.key_vault_purge_protection_enabled
-  key_vault_sku_name                   = local.key_vault_sku_name
-  base_tags                            = local.base_tags
+  project_name        = local.project_name
+  resource_location   = local.resource_location
+  resource_group_name = local.resource_group_name
+  key_vault_name      = local.key_vault_name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  key_vault_settings  = local.key_vault_settings
+  base_tags           = local.base_tags
 
 }
 
