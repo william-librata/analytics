@@ -1,15 +1,5 @@
 variable "project_name" {
-  description = "The project name to apply to resources"
-  type        = string
-}
-
-variable "environment_tag" {
-  description = "The type of environment being deployed to in 3 letter form (e.g. dev, tst, prd)"
-  type        = string
-}
-
-variable "environment_name" {
-  description = "The type of environment being deployed to in long form (e.g. development, test, production)"
+  description = "Project name"
   type        = string
 }
 
@@ -23,6 +13,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "virtual_network_name" {
+  description = "Virtual network name"
+  type        = string
+}
+
 variable "address_spaces" {
   description = "VNET address spaces"
   type        = list(any)
@@ -31,4 +26,8 @@ variable "address_spaces" {
 variable "subnets" {
   description = "Subnets to be created"
   type        = map(any)
+}
+
+variable "base_tags" {
+  description = "Base tags for resources"
 }

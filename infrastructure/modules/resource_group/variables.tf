@@ -1,19 +1,18 @@
 variable "project_name" {
-  description = "The project name to apply to resources"
+  description = "Project name"
   type        = string
 }
 
-variable "environment_tag" {
-  description = "The type of environment being deployed to in 3 letter form (e.g. dev, tst, prd)"
-  type        = string
-}
-
-variable "environment_name" {
-  description = "The type of environment being deployed to in long form (e.g. development, test, production)"
+variable "resource_group_name" {
+  description = "Resource group name"
   type        = string
 }
 
 variable "resource_location" {
-  description = "The location of the resource"
+  description = "Resource group location"
   type        = string
+}
+
+variable "base_tags" {
+  description = "Base tags for resources"
 }
