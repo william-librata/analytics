@@ -70,27 +70,28 @@ module "network" {
     generic = {
         address_spaces = ["10.0.0.0/24"]
         enforce_private_link_endpoint_network_policies = true
-        service_delegation = false
+        service_delegation_name = null
     }
 
     # bastion subnet
     bastion = {
         address_spaces = ["10.0.1.0/26"]
         enforce_private_link_endpoint_network_policies = true
-        service_delegation = false
+        service_delegation_name = null
     }
 
     # databricks
     databricks_public = {
         address_spaces = ["10.0.1.64/26"]
         enforce_private_link_endpoint_network_policies = true
-        service_delegation = true
+        service_delegation_name = "Microsoft.Databricks/workspaces"
+
     }
 
     databricks_private = {
         address_spaces = ["10.0.1.128/26"]
         enforce_private_link_endpoint_network_policies = true
-        service_delegation = true
+        service_delegation_name = "Microsoft.Databricks/workspaces"
     }
   }
 }
