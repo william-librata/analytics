@@ -9,7 +9,7 @@ terraform {
   }
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
     }
   }
 }
@@ -28,74 +28,93 @@ provider "azurerm" {
 }
 
 # local variables
-locals{
-  project_name = "analytics"
-  environment_tag = "dev"
-  environment_name = "development"
-  resource_location = "australiaeast"   
+locals {
+  project_name      = "analytics"
+  environment_tag   = "dev"
+  environment_name  = "development"
+  resource_location = "australiaeast"
+
+  # networking
+  address_spaces = ["10.0.0.0/20"]
+  subnets = {
+
+    # catch all subnet
+    generic = {
+      address_spaces                                 = ["10.0.0.0/24"]
+      enforce_private_link_endpoint_network_policies = true
+      service_delegation_name                        = null
+    }
+
+    # bastion subnet
+    bastion = {
+      address_spaces                                 = ["10.0.1.0/26"]
+      enforce_private_link_endpoint_network_policies = true
+      service_delegation_name                        = null
+    }
+
+    # databricks
+    databricks_public = {
+      address_spaces                                 = ["10.0.1.64/26"]
+      enforce_private_link_endpoint_network_policies = true
+      service_delegation_name                        = "Microsoft.Databricks/workspaces"
+
+    }
+
+    databricks_private = {
+      address_spaces                                 = ["10.0.1.128/26"]
+      enforce_private_link_endpoint_network_policies = true
+      service_delegation_name                        = "Microsoft.Databricks/workspaces"
+    }
+  }
+
+
 }
 
 module "resource_group" {
-  
+
   # path
   source = "../../modules/resource_group"
 
   # info
-  project_name = local.project_name
-  environment_tag = local.environment_tag
-  environment_name = local.environment_name
+  project_name      = local.project_name
+  environment_tag   = local.environment_tag
+  environment_name  = local.environment_name
   resource_location = local.resource_location
 
 }
 
 module "network" {
-  
+
   # path
   source = "../../modules/network"
 
   # info
-  project_name = local.project_name
-  environment_tag = local.environment_tag
-  environment_name = local.environment_name
-  resource_location = local.resource_location
+  project_name        = local.project_name
+  environment_tag     = local.environment_tag
+  environment_name    = local.environment_name
+  resource_location   = local.resource_location
   resource_group_name = module.resource_group.resource_group_name
 
   # vnet 
-  address_spaces = ["10.0.0.0/20"]
+  address_spaces = local.virtual_network_address_spaces
 
   # subnet
-  subnets = {
+  subnets = local.subnets
 
-    # catch all subnet
-    generic = {
-        address_spaces = ["10.0.0.0/24"]
-        enforce_private_link_endpoint_network_policies = true
-        service_delegation_name = null
-    }
-
-    # bastion subnet
-    bastion = {
-        address_spaces = ["10.0.1.0/26"]
-        enforce_private_link_endpoint_network_policies = true
-        service_delegation_name = null
-    }
-
-    # databricks
-    databricks_public = {
-        address_spaces = ["10.0.1.64/26"]
-        enforce_private_link_endpoint_network_policies = true
-        service_delegation_name = "Microsoft.Databricks/workspaces"
-
-    }
-
-    databricks_private = {
-        address_spaces = ["10.0.1.128/26"]
-        enforce_private_link_endpoint_network_policies = true
-        service_delegation_name = "Microsoft.Databricks/workspaces"
-    }
-  }
 }
 
+module "key_vault" {
+
+  # path
+  source = "../../modules/network"
+
+  # info
+  project_name        = local.project_name
+  environment_tag     = local.environment_tag
+  environment_name    = local.environment_name
+  resource_location   = local.resource_location
+  resource_group_name = module.resource_group.resource_group_name
+}
 
 
 
