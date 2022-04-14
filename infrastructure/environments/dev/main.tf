@@ -131,29 +131,9 @@ module "key_vault" {
 }
 
 
-/*
-module "key_vault" {
-
-  # path
-  source = "../../modules/key_vault"
-
-  # info
-  project_name        = local.project_name
-  environment_tag     = local.environment_tag
-  environment_name    = local.environment_name
-  resource_location   = local.resource_location
-  resource_group_name = module.resource_group.resource_group_name
-}
-
-*/
-
 
 
 /*
-
-bastion = ["10.0.1.0/26"]
-      databricks_public = ["10.0.1.64/26"]
-      databricks_private = ["10.0.1.128/26"]
 
 
 # get keyvault id from core resource group
