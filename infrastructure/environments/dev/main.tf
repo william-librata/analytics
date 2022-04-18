@@ -27,82 +27,16 @@ provider "azurerm" {
   }
 }
 
-# local variables
-locals {
-
-  # info
-  project_name      = "analytics"
-  environment_tag   = "dev"
-  environment_name  = "development"
-  resource_location = "australiaeast"
-  domain_name       = "walys"
-
-  # tags
-  base_tags = {
-    environment = local.environment_name
-    project     = local.project_name
-  }
-
-  # resource group
-  resource_group_name = "rg-${local.project_name}-${local.environment_tag}"
-
-  # networking
-  virtual_network_name = "vnet-${local.project_name}-${local.environment_tag}"
-  address_spaces       = ["10.0.0.0/20"]
-  subnets = {
-
-    # catch all subnet
-    generic = {
-      address_spaces                                 = ["10.0.0.0/24"]
-      enforce_private_link_endpoint_network_policies = true
-      service_delegation_name                        = null
-    }
-
-    # bastion subnet
-    bastion = {
-      address_spaces                                 = ["10.0.1.0/26"]
-      enforce_private_link_endpoint_network_policies = true
-      service_delegation_name                        = null
-    }
-
-    # databricks public
-    databricks-public = {
-      address_spaces                                 = ["10.0.1.64/26"]
-      enforce_private_link_endpoint_network_policies = true
-      service_delegation_name                        = "Microsoft.Databricks/workspaces"
-
-    }
-
-    # databricks private
-    databricks-private = {
-      address_spaces                                 = ["10.0.1.128/26"]
-      enforce_private_link_endpoint_network_policies = true
-      service_delegation_name                        = "Microsoft.Databricks/workspaces"
-    }
-  }
-
-  key_vault_name = "kv-${local.domain_name}-${local.project_name}-${local.environment_tag}"
-
-  key_vault_settings = {
-    soft_delete_retention_days = 30
-    purge_protection_enabled   = false
-    sku_name                   = "standard"
-  }
-}
-
 module "resource_group" {
-
   source = "../../modules/resource_group"
 
   project_name        = local.project_name
   resource_group_name = local.resource_group_name
   resource_location   = local.resource_location
   base_tags           = local.base_tags
-
 }
 
 module "network" {
-
   source = "../../modules/network"
 
   project_name         = local.project_name
@@ -112,12 +46,9 @@ module "network" {
   address_spaces       = local.address_spaces
   subnets              = local.subnets
   base_tags            = local.base_tags
-
 }
 
 module "key_vault" {
-
-  # path
   source = "../../modules/key_vault"
 
   project_name        = local.project_name
@@ -127,24 +58,18 @@ module "key_vault" {
   tenant_id           = data.azurerm_client_config.current.tenant_id
   key_vault_settings  = local.key_vault_settings
   base_tags           = local.base_tags
-
 }
-
 
 module "private_dns" {
 
-  # path
   source = "../../modules/private_dns"
 
-  project_name        = local.project_name
-  resource_location   = local.resource_location
   resource_group_name = local.resource_group_name
-  key_vault_name      = local.key_vault_name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  key_vault_settings  = local.key_vault_settings
+  private_dns_names   = local.private_dns_names
   base_tags           = local.base_tags
-
 }
+
+/*
 
 
 
@@ -163,6 +88,7 @@ module "data_lake" {
   base_tags           = local.base_tags
 
 }
+*/
 
 
 /*

@@ -7,5 +7,4 @@ resource "azurerm_key_vault" "key_vault" {
   purge_protection_enabled   = var.key_vault_settings.purge_protection_enabled
   sku_name                   = var.key_vault_settings.sku_name
   tags                       = merge(var.base_tags, { description = "${var.project_name} key vault" })
-
 }
