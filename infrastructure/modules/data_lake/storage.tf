@@ -1,6 +1,6 @@
-# transient storage account
+# data lake
 resource "azurerm_storage_account" "data_lake" {
-  name                            = "st${var.department_tag}${var.project_name}datalake${var.environment_tag}"
+  name                            = "st${var.project_name}datalake${var.environment_tag}"
   resource_group_name             = azurerm_resource_group.resource_group.name
   location                        = var.resource_location
   account_tier                    = var.storage_account_tier

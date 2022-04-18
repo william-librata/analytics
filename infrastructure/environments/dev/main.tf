@@ -131,6 +131,38 @@ module "key_vault" {
 }
 
 
+module "private_dns" {
+
+  # path
+  source = "../../modules/private_dns"
+
+  project_name        = local.project_name
+  resource_location   = local.resource_location
+  resource_group_name = local.resource_group_name
+  key_vault_name      = local.key_vault_name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  key_vault_settings  = local.key_vault_settings
+  base_tags           = local.base_tags
+
+}
+
+
+
+
+module "data_lake" {
+
+  # path
+  source = "../../modules/data_lake"
+
+  project_name        = local.project_name
+  resource_location   = local.resource_location
+  resource_group_name = local.resource_group_name
+  key_vault_name      = local.key_vault_name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  key_vault_settings  = local.key_vault_settings
+  base_tags           = local.base_tags
+
+}
 
 
 /*

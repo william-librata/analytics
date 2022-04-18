@@ -9,5 +9,3 @@ resource "azurerm_key_vault" "key_vault" {
   tags                       = merge(var.base_tags, { description = "${var.project_name} key vault" })
 
 }
-
-
