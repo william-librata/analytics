@@ -9,8 +9,13 @@ variable "resource_group_name" {
 }
 
 variable "resource_location" {
-  description = "Resource group location"
+  description = "Resource location"
   type        = string
+}
+
+variable "storage_account_settings" {
+  description = "Storage account settings"
+  type        = map(any)
 }
 
 variable "base_tags" {

@@ -18,15 +18,12 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "key_vault_name" {
-  description = "Key vault name"
-  type        = string
-}
-
 variable "key_vault_settings" {
   description = "key vault settings"
+  type        = map(any)
 }
 
 variable "base_tags" {
   description = "Base tags for resources"
+  type        = map(any)
 }

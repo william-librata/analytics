@@ -1,4 +1,4 @@
-# add link to virtual network
+/*# add link to virtual network
 resource "azurerm_private_dns_zone_virtual_network_link" "data_lake" {
   name                  = "pdzvnl-${var.project_name}-data-lake-${var.environment_tag}"
   resource_group_name   = azurerm_resource_group.resource_group.name
@@ -25,3 +25,4 @@ resource "azurerm_private_endpoint" "data_lake" {
     private_dns_zone_ids = [azurerm_private_dns_zone.data_lake.id]
   }
 }
+*/

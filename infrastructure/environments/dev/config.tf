@@ -51,8 +51,8 @@ locals {
     }
 
     # key vault
-    key_vault_name = "kv-${local.domain_name}-${local.project_name}-${local.environment_tag}"
     key_vault_settings = {
+        name = "kv-${local.domain_name}-${local.project_name}-${local.environment_tag}"
         soft_delete_retention_days = 30
         purge_protection_enabled   = false
         sku_name                   = "standard"
@@ -62,4 +62,15 @@ locals {
     private_dns_names = {
         blob = "privatelink.blob.core.windows.net"
     }
+
+    # data lake
+    data_lake_settings = {
+        name = "st${local.project_name}datalake${local.environment_tag}"
+        storage_account_tier = "Standard"
+        storage_account_replication_type = "LRS"
+        is_hns_enabled = true
+        allow_nested_items_to_be_public = true
+        min_tls_version = "TLS1_2"
+    }
+
 }

@@ -54,7 +54,6 @@ module "key_vault" {
   project_name        = local.project_name
   resource_location   = local.resource_location
   resource_group_name = local.resource_group_name
-  key_vault_name      = local.key_vault_name
   tenant_id           = data.azurerm_client_config.current.tenant_id
   key_vault_settings  = local.key_vault_settings
   base_tags           = local.base_tags
@@ -68,6 +67,19 @@ module "private_dns" {
   private_dns_names   = local.private_dns_names
   base_tags           = local.base_tags
 }
+
+module "data_lake" {
+
+  source = "../../modules/storage"
+
+  project_name        = local.project_name
+  resource_group_name = local.resource_group_name
+  resource_location   = local.resource_location
+  storage_account_settings = local.data_lake_settings
+  base_tags           = local.base_tags
+
+}
+
 
 /*
 
