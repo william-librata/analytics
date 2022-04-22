@@ -13,5 +13,5 @@ resource "azurerm_storage_account" "storage_account" {
     type = "SystemAssigned"
   }
 
-  tags                = merge(var.base_tags, { description = "${var.project_name} data lake" })
+  tags = merge(var.base_tags, { description = "${var.project_name} data lake" })
 }

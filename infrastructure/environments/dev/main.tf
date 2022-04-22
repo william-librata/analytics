@@ -72,13 +72,37 @@ module "data_lake" {
 
   source = "../../modules/storage"
 
-  project_name        = local.project_name
-  resource_group_name = local.resource_group_name
-  resource_location   = local.resource_location
+  project_name             = local.project_name
+  resource_group_name      = local.resource_group_name
+  resource_location        = local.resource_location
   storage_account_settings = local.data_lake_settings
-  base_tags           = local.base_tags
+  base_tags                = local.base_tags
 
 }
+
+module "databricks" {
+    source = "../../modules/databricks"
+
+    network_security_group_private_name = local.network_security_group_private_name
+    network_security_group_private_subnet_id = lookup(module.network.subnet_ids, "databricks-private")
+
+    network_security_group_public_name = local.network_security_group_public_name
+    network_security_group_public_subnet_id = lookup(module.network.subnet_ids, "databricks-public")
+
+    public_ip_name = "pip-${var.project_name}-databricks-${var.environment_tag}-${var.resource_location}"
+
+    storage_account_name = "st${var.department_tag}${var.project_name}dbw${var.environment_tag}"
+
+    key_vault_id = module.key_vault.key_vault_id
+    key_vault_uri = module.key_vault.key_vault_uri
+    databricks_key_vault_settings = {
+        secret_scope_name = "secret-scope"
+        secret_permissions = ["Delete", "Get", "List", "Set"]
+    }
+
+}
+
+
 
 
 /*
