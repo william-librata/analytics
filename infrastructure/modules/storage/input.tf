@@ -13,12 +13,12 @@ variable "resource_location" {
   type        = string
 }
 
-variable "storage_account_settings" {
-  description = "Storage account settings"
+variable "base_tags" {
+  description = "Base tags for resources"
   type        = map(any)
 }
 
-variable "base_tags" {
-  description = "Base tags for resources"
+variable "storage_account_settings" {
+  description = "Storage account settings"
   type        = map(any)
 }

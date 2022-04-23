@@ -13,6 +13,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "base_tags" {
+  description = "Base tags for resources"
+  type        = map(any)
+}
+
 variable "virtual_network_name" {
   description = "Virtual network name"
   type        = string
@@ -25,10 +30,5 @@ variable "address_spaces" {
 
 variable "subnets" {
   description = "Subnets to be created"
-  type        = map(any)
-}
-
-variable "base_tags" {
-  description = "Base tags for resources"
   type        = map(any)
 }

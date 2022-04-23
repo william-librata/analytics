@@ -1,6 +1,22 @@
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
+provider "registry.terraform.io/databrickslabs/databricks" {
+  version = "0.5.5"
+  hashes = [
+    "h1:akCOlGhCoS1l4H9PF5Sx92nW1fKmKLMkekBLnc8zhuc=",
+    "zh:34fe845cde7316d5fca849b8545321e3887c1eb0c4c0eea9a44d213a174cacfc",
+    "zh:5cf2ba503cfcc17252960a8b62a4289217852d9f2f8ac0e48a21fcc4edafde58",
+    "zh:811787b04cde34d0ac30a67e568a84f9bd7533962a88642d2f9c580b43645605",
+    "zh:97111fa911083834f47b9375263f175eab3deff392671026cc528cdfb54a6279",
+    "zh:b09595def598e4bce2bf1728feb7f05b43cfaab0c16464cb5a9fe4fc6ec89b6b",
+    "zh:b3a6fc639c5096daeae81041588a3f6bd1ba938d4ff63839e2c28d6ea1964bb0",
+    "zh:e6d0e88652a2d24bdb93e03649373f3b05e18f83d1ce4ef335fc82770955be1f",
+    "zh:f0b2bd83f8d209c885758d4c829faa7f186dfc664536b3084b2ee234fe838eda",
+    "zh:f0f643d7d364723dadc51d4e942b925680ab89cb6fd8760b691ae75bda1d6c2a",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "3.0.2"
   constraints = "3.0.2"

@@ -82,9 +82,29 @@ locals {
 
 
   # databricks
-  network_security_group_private = {
-    name = "nsg-${local.project_name}-databricks-public-${local.environment_tag}"
-    subnet_id = 
+  databricks_workspace_settings = {
+
+    name = "dbw-${local.project_name}-${local.environment_tag}"
+
+    virtual_network_name = local.virtual_network_name
+    public_subnet_name   = "databricks-public"
+    private_subnet_name  = "databricks-private"
+
+    network_security_group_private_name = "nsg-${local.project_name}-databricks-private-${local.environment_tag}"
+    network_security_group_public_name  = "nsg-${local.project_name}-databricks-public-${local.environment_tag}"
+    public_ip_name                      = "pip-${local.project_name}-databricks-${local.environment_tag}"
+    storage_account_name                = "st${local.project_name}dbw${local.environment_tag}"
+
+    managed_resource_group_name   = "rg-${local.project_name}-databricks-${local.environment_tag}"
+    sku                           = "premium"
+    public_network_access_enabled = true
+
+  }
+
+  databricks_key_vault_settings = {
+    name               = "kv-${local.domain_name}-${local.project_name}-${local.environment_tag}"
+    secret_scope_name  = "secret-scope"
+    secret_permissions = ["Delete", "Get", "List", "Set"]
   }
 
 }

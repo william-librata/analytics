@@ -14,10 +14,6 @@ terraform {
   }
 }
 
-# get tenant information
-data "azurerm_client_config" "current" {
-}
-
 # configure the Microsoft Azure Provider
 provider "azurerm" {
   features {
@@ -42,10 +38,10 @@ module "network" {
   project_name         = local.project_name
   resource_location    = local.resource_location
   resource_group_name  = local.resource_group_name
+  base_tags            = local.base_tags
   virtual_network_name = local.virtual_network_name
   address_spaces       = local.address_spaces
   subnets              = local.subnets
-  base_tags            = local.base_tags
 }
 
 module "key_vault" {
@@ -54,9 +50,8 @@ module "key_vault" {
   project_name        = local.project_name
   resource_location   = local.resource_location
   resource_group_name = local.resource_group_name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  key_vault_settings  = local.key_vault_settings
   base_tags           = local.base_tags
+  key_vault_settings  = local.key_vault_settings
 }
 
 module "private_dns" {
@@ -64,8 +59,8 @@ module "private_dns" {
   source = "../../modules/private_dns"
 
   resource_group_name = local.resource_group_name
-  private_dns_names   = local.private_dns_names
   base_tags           = local.base_tags
+  private_dns_names   = local.private_dns_names
 }
 
 module "data_lake" {
@@ -75,33 +70,23 @@ module "data_lake" {
   project_name             = local.project_name
   resource_group_name      = local.resource_group_name
   resource_location        = local.resource_location
-  storage_account_settings = local.data_lake_settings
   base_tags                = local.base_tags
+  storage_account_settings = local.data_lake_settings
 
 }
 
 module "databricks" {
-    source = "../../modules/databricks"
+  source = "../../modules/databricks"
 
-    network_security_group_private_name = local.network_security_group_private_name
-    network_security_group_private_subnet_id = lookup(module.network.subnet_ids, "databricks-private")
+  project_name        = local.project_name
+  resource_group_name = local.resource_group_name
+  resource_location   = local.resource_location
+  base_tags           = local.base_tags
 
-    network_security_group_public_name = local.network_security_group_public_name
-    network_security_group_public_subnet_id = lookup(module.network.subnet_ids, "databricks-public")
-
-    public_ip_name = "pip-${var.project_name}-databricks-${var.environment_tag}-${var.resource_location}"
-
-    storage_account_name = "st${var.department_tag}${var.project_name}dbw${var.environment_tag}"
-
-    key_vault_id = module.key_vault.key_vault_id
-    key_vault_uri = module.key_vault.key_vault_uri
-    databricks_key_vault_settings = {
-        secret_scope_name = "secret-scope"
-        secret_permissions = ["Delete", "Get", "List", "Set"]
-    }
+  databricks_workspace_settings = local.databricks_workspace_settings
+  databricks_key_vault_settings = local.databricks_key_vault_settings
 
 }
-
 
 
 

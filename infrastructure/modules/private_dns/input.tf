@@ -3,12 +3,12 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "private_dns_names" {
-  description = "Private DNS to be created"
+variable "base_tags" {
+  description = "Base tags for resources"
   type        = map(any)
 }
 
-variable "base_tags" {
-  description = "Base tags for resources"
+variable "private_dns_names" {
+  description = "Private DNS to be created"
   type        = map(any)
 }

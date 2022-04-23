@@ -6,3 +6,7 @@ terraform {
     }
   }
 }
+
+provider "databricks" {
+  host = azurerm_databricks_workspace.databricks.workspace_url
+}
