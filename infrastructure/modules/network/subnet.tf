@@ -7,7 +7,7 @@ resource "azurerm_subnet" "subnet" {
   enforce_private_link_endpoint_network_policies = each.value.enforce_private_link_endpoint_network_policies
 
   dynamic "delegation" {
-    for_each = each.value.service_delegation_name == true ? [1] : []
+    for_each = each.value.service_delegation_name != null ? [1] : []
 
     content {
       name = "subnet delegation"
@@ -15,5 +15,11 @@ resource "azurerm_subnet" "subnet" {
         name = each.value.service_delegation_name
       }
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      delegation.0.service_delegation.0.actions
+    ]
   }
 }
